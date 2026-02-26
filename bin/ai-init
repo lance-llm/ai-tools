@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+// ai-init 命令入口
+require('../dist/commands/init.js');

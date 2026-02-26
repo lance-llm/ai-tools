@@ -1,0 +1,56 @@
+{
+  "name": "@lance2026/ai-tools",
+  "version": "1.0.1",
+  "description": "AI 驱动的开发工具集 - 报错分析、Shell 生成、SQL 生成等",
+  "main": "dist/index.js",
+  "bin": {
+    "ai-error": "./bin/ai-error",
+    "ai-shell": "./bin/ai-shell",
+    "ai-sql": "./bin/ai-sql",
+    "ai-init": "./bin/ai-init",
+    "ai-config": "./bin/ai-config"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "start": "npm run build && node bin/ai-error",
+    "dev": "tsc && node bin/ai-error"
+  },
+  "keywords": [
+    "ai",
+    "cli",
+    "error",
+    "debug",
+    "shell",
+    "sql",
+    "llm",
+    "qwen",
+    "openai",
+    "dev-tools"
+  ],
+  "author": "lance2026",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lance2026/ai-tools.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "clipboardy": "^5.3.1",
+    "commander": "^14.0.3",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "@types/prompts": "^2.4.9",
+    "typescript": "^5.9.3"
+  }
+}

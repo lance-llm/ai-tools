@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+// ai-config 命令入口
+require('../dist/commands/config.js');

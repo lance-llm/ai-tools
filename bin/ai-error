@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+// ai-error 命令入口
+require('../dist/commands/error-solve.js');
