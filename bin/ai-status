@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+// ai-status entry point
+require('../dist/commands/status.js');
