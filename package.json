@@ -1,7 +1,7 @@
 {
   "name": "@lance2026/ai-tools",
-  "version": "1.4.0",
-  "description": "AI 驱动的开发工具集 - 报错分析、Shell 生成、SQL 生成、双语翻译等",
+  "version": "1.5.0",
+  "description": "AI 驱动的开发工具集 - 报错分析、Shell 生成、SQL 生成、双语翻译、Apple 智能助理等",
   "main": "dist/index.js",
   "bin": {
     "ai-commit": "./bin/ai-commit",
