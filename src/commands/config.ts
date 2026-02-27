@@ -7,6 +7,7 @@ import * as os from 'os';
 import prompts from 'prompts';
 import chalk from 'chalk';
 import { exec } from 'child_process';
+import { version } from '../../package.json';
 
 const CONFIG_PATH = path.join(os.homedir(), '.config', 'ai-tools', 'config.json');
 
@@ -15,7 +16,7 @@ const program = new Command();
 program
   .name('ai-config')
   .description('查看或编辑 AI Tools 配置')
-  .version('1.0.0')
+  .version(version)
   .option('-e, --edit', '使用默认编辑器打开配置文件')
   .option('-p, --path', '仅显示配置文件路径')
   .option('--reset', '重置为默认配置（危险操作）')

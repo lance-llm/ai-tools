@@ -10,6 +10,7 @@ export interface ToolConfig {
     dialect?: string;
     explainMode?: boolean;
     autoCopyFix?: boolean;
+    showExplanation?: boolean;
     [key: string]: any;
 }
 export type MergedConfig = Omit<CommonConfig, keyof ToolConfig> & CommonConfig & ToolConfig;

@@ -42,13 +42,15 @@ const path = __importStar(require("path"));
 const os = __importStar(require("os"));
 const prompts_1 = __importDefault(require("prompts"));
 const chalk_1 = __importDefault(require("chalk"));
+const config_1 = require("../config");
+const package_json_1 = require("../../package.json");
 const CONFIG_DIR = path.join(os.homedir(), '.config', 'ai-tools');
 const CONFIG_PATH = path.join(CONFIG_DIR, 'config.json');
 const program = new commander_1.Command();
 program
     .name('ai-init')
     .description('初始化 AI Tools 配置文件')
-    .version('1.0.0')
+    .version(package_json_1.version)
     .option('-f, --force', '覆盖已存在的配置文件')
     .parse(process.argv);
 const options = program.opts();
@@ -125,23 +127,33 @@ async function main() {
         printError('API Key 不能为空');
         process.exit(1);
     }
+    const lang = response.language || 'zh';
     const config = {
-        _comment: 'AI Tools 通用配置文件',
         _docs: 'https://github.com/lance2026/ai-tools',
         baseUrl: response.baseUrl,
         apiKey: response.apiKey,
         model: response.model,
-        language: response.language || 'zh',
+        language: lang,
         errorSolver: {
             model: response.model,
             explainMode: true,
+            systemMessage: config_1.DEFAULT_SYSTEM_MESSAGES['errorSolver']?.[lang]
+                ?? config_1.DEFAULT_SYSTEM_MESSAGES['errorSolver']?.['zh']
+                ?? '',
         },
         smartShell: {
             model: response.model,
+            showExplanation: true,
+            systemMessage: config_1.DEFAULT_SYSTEM_MESSAGES['smartShell']?.[lang]
+                ?? config_1.DEFAULT_SYSTEM_MESSAGES['smartShell']?.['zh']
+                ?? '',
         },
         smartSql: {
             model: response.model,
             dialect: 'postgresql',
+            systemMessage: config_1.DEFAULT_SYSTEM_MESSAGES['smartSql']?.[lang]
+                ?? config_1.DEFAULT_SYSTEM_MESSAGES['smartSql']?.['zh']
+                ?? '',
         },
     };
     fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));

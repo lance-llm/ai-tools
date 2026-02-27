@@ -43,12 +43,13 @@ const os = __importStar(require("os"));
 const prompts_1 = __importDefault(require("prompts"));
 const chalk_1 = __importDefault(require("chalk"));
 const child_process_1 = require("child_process");
+const package_json_1 = require("../../package.json");
 const CONFIG_PATH = path.join(os.homedir(), '.config', 'ai-tools', 'config.json');
 const program = new commander_1.Command();
 program
     .name('ai-config')
     .description('查看或编辑 AI Tools 配置')
-    .version('1.0.0')
+    .version(package_json_1.version)
     .option('-e, --edit', '使用默认编辑器打开配置文件')
     .option('-p, --path', '仅显示配置文件路径')
     .option('--reset', '重置为默认配置（危险操作）')

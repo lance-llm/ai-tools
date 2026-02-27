@@ -9,13 +9,14 @@ const clipboardy_1 = __importDefault(require("clipboardy"));
 const config_1 = require("../config");
 const llm_1 = require("../llm");
 const detector_1 = require("../detector");
+const package_json_1 = require("../../package.json");
 const formatter_1 = require("../formatter");
 const TOOL_NAME = 'errorSolver';
 const program = new commander_1.Command();
 program
     .name('ai-error')
     .description('AI 驱动的报错分析工具 - 粘贴报错信息，AI 自动分析原因并给出修复方案')
-    .version('1.0.0')
+    .version(package_json_1.version)
     .option('-y, --yes', '直接读取剪贴板，不交互')
     .option('-c, --config <path>', '指定配置文件路径')
     .option('-e, --explain', '启用详细解释模式')

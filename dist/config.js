@@ -33,6 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DEFAULT_SYSTEM_MESSAGES = void 0;
 exports.loadConfig = loadConfig;
 exports.getLanguage = getLanguage;
 exports.getConfigPath = getConfigPath;
@@ -47,7 +48,7 @@ const DEFAULT_COMMON_CONFIG = {
     model: 'qwen3.5-flash',
     language: 'zh',
 };
-const DEFAULT_SYSTEM_MESSAGES = {
+exports.DEFAULT_SYSTEM_MESSAGES = {
     errorSolver: {
         zh: `你是资深程序员，擅长分析各种编程错误。
 
@@ -149,7 +150,7 @@ function loadConfig(toolName, customPath) {
     };
     if (!mergedConfig.systemMessage) {
         const lang = mergedConfig.language || 'zh';
-        mergedConfig.systemMessage = DEFAULT_SYSTEM_MESSAGES[toolName]?.[lang] || DEFAULT_SYSTEM_MESSAGES[toolName]?.['zh'] || '';
+        mergedConfig.systemMessage = exports.DEFAULT_SYSTEM_MESSAGES[toolName]?.[lang] || exports.DEFAULT_SYSTEM_MESSAGES[toolName]?.['zh'] || '';
     }
     if (!mergedConfig.apiKey) {
         console.error('❌ 错误：缺少 API Key 配置');

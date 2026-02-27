@@ -1,4 +1,4 @@
-// ai-init 命令实现 - 初始化配置文件
+// ai-init command - initialize config file
 
 import { Command } from 'commander';
 import * as fs from 'fs';
@@ -6,6 +6,8 @@ import * as path from 'path';
 import * as os from 'os';
 import prompts from 'prompts';
 import chalk from 'chalk';
+import { DEFAULT_SYSTEM_MESSAGES } from '../config';
+import { version } from '../../package.json';
 
 const CONFIG_DIR = path.join(os.homedir(), '.config', 'ai-tools');
 const CONFIG_PATH = path.join(CONFIG_DIR, 'config.json');
@@ -15,7 +17,7 @@ const program = new Command();
 program
   .name('ai-init')
   .description('初始化 AI Tools 配置文件')
-  .version('1.0.0')
+  .version(version)
   .option('-f, --force', '覆盖已存在的配置文件')
   .parse(process.argv);
 
@@ -109,26 +111,44 @@ async function main() {
     process.exit(1);
   }
 
-  // 构建配置对象
+  const lang: string = response.language || 'zh';
+
+  // Build config with all available parameters and real default values
+  // so users can discover and customize everything directly in the file
   const config = {
-    _comment: 'AI Tools 通用配置文件',
     _docs: 'https://github.com/lance2026/ai-tools',
     baseUrl: response.baseUrl,
     apiKey: response.apiKey,
     model: response.model,
-    language: response.language || 'zh',
+    language: lang,
+
     errorSolver: {
+      // Override the global model for this tool
       model: response.model,
+      // Show verbose explanation of the error cause (true/false)
       explainMode: true,
+      // Customize the system prompt sent to the LLM
+      systemMessage: DEFAULT_SYSTEM_MESSAGES['errorSolver']?.[lang]
+        ?? DEFAULT_SYSTEM_MESSAGES['errorSolver']?.['zh']
+        ?? '',
     },
+
     smartShell: {
       model: response.model,
-      // systemMessage: '自定义提示词...',
+      // Show command explanation below the generated command (true/false)
+      showExplanation: true,
+      systemMessage: DEFAULT_SYSTEM_MESSAGES['smartShell']?.[lang]
+        ?? DEFAULT_SYSTEM_MESSAGES['smartShell']?.['zh']
+        ?? '',
     },
+
     smartSql: {
       model: response.model,
+      // SQL dialect: postgresql | mysql | sqlite
       dialect: 'postgresql',
-      // systemMessage: '自定义提示词...',
+      systemMessage: DEFAULT_SYSTEM_MESSAGES['smartSql']?.[lang]
+        ?? DEFAULT_SYSTEM_MESSAGES['smartSql']?.['zh']
+        ?? '',
     },
   };
 

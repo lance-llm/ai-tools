@@ -13,7 +13,7 @@ const DEFAULT_COMMON_CONFIG: Partial<CommonConfig> = {
   language: 'zh',
 };
 
-const DEFAULT_SYSTEM_MESSAGES: Record<string, Record<string, string>> = {
+export const DEFAULT_SYSTEM_MESSAGES: Record<string, Record<string, string>> = {
   errorSolver: {
     zh: `你是资深程序员，擅长分析各种编程错误。
 

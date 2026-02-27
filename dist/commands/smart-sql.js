@@ -8,12 +8,13 @@ const prompts_1 = __importDefault(require("prompts"));
 const config_1 = require("../config");
 const llm_1 = require("../llm");
 const formatter_1 = require("../formatter");
+const package_json_1 = require("../../package.json");
 const TOOL_NAME = 'smartSql';
 const program = new commander_1.Command();
 program
     .name('ai-sql')
     .description('AI 驱动的 SQL 查询生成工具 - 根据自然语言描述生成 SQL 查询')
-    .version('1.0.0')
+    .version(package_json_1.version)
     .option('-c, --config <path>', '指定配置文件路径')
     .option('-d, --dialect <type>', 'SQL 方言 (postgresql/mysql/sqlite)', 'postgresql')
     .option('-m, --modify', '修改模式：提供 SQL 和报错信息进行修复')

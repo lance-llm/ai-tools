@@ -10,9 +10,10 @@ export interface CommonConfig {
 export interface ToolConfig {
   model?: string;
   systemMessage?: string;
-  dialect?: string;   // postgresql | mysql | sqlite
+  dialect?: string;        // postgresql | mysql | sqlite
   explainMode?: boolean;
   autoCopyFix?: boolean;
+  showExplanation?: boolean; // ai-shell: show command explanation, default true
   [key: string]: any;
 }
 

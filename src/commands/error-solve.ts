@@ -6,6 +6,7 @@ import clipboard from 'clipboardy';
 import { loadConfig } from '../config';
 import { callLLM, createMessages } from '../llm';
 import { detectLanguage, formatLanguageName } from '../detector';
+import { version } from '../../package.json';
 import {
   printWelcome,
   printInputPrompt,
@@ -25,7 +26,7 @@ const program = new Command();
 program
   .name('ai-error')
   .description('AI 驱动的报错分析工具 - 粘贴报错信息，AI 自动分析原因并给出修复方案')
-  .version('1.0.0')
+  .version(version)
   .option('-y, --yes', '直接读取剪贴板，不交互')
   .option('-c, --config <path>', '指定配置文件路径')
   .option('-e, --explain', '启用详细解释模式')
