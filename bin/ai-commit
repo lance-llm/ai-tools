@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+// ai-commit entry point
+require('../dist/commands/commit.js');

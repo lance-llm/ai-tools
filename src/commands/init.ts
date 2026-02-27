@@ -155,6 +155,15 @@ async function main() {
         ?? DEFAULT_SYSTEM_MESSAGES['smartSql']?.['zh']
         ?? '',
     },
+
+    aiCommit: {
+      model: response.model,
+      // Show commit body in preview and include it in the final commit (overrides global showExplanation)
+      showExplanation: true,
+      systemMessage: DEFAULT_SYSTEM_MESSAGES['aiCommit']?.[lang]
+        ?? DEFAULT_SYSTEM_MESSAGES['aiCommit']?.['zh']
+        ?? '',
+    },
   };
 
   // 写入配置文件
