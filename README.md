@@ -1,258 +1,285 @@
 # AI Tools
 
-AI 驱动的开发工具 - 报错分析、Shell 生成、SQL 生成
+AI-powered CLI toolkit for developers — error analysis, shell command generation, SQL generation, and git commit message generation. Works with any OpenAI-compatible API (Qwen / DeepSeek / OpenAI / etc.).
 
-## ✨ 工具列表
+## Commands
 
-| 命令 | 功能 |
-|------|------|
-| `ai-init` | 初始化配置 |
-| `ai-config` | 查看/编辑配置 |
-| `ai-error` | 报错分析 |
-| `ai-shell` | Shell 命令生成 |
-| `ai-sql` | SQL 查询生成 |
+| Command | Description |
+|---------|-------------|
+| `ai-init` | Interactive setup wizard — initializes config file |
+| `ai-status` | Show config summary: version, API key, model, per-tool settings |
+| `ai-config` | View or edit the config file |
+| `ai-error` | Analyze error messages and suggest fixes |
+| `ai-shell` | Generate shell commands from natural language |
+| `ai-sql` | Generate SQL queries from natural language |
+| `ai-commit` | Analyze git diff and generate a commit message |
 
-## 🚀 安装
+## Installation
 
 ```bash
 npm install -g @lance2026/ai-tools
 ```
 
-## 📖 使用方法
-
-### 0. 初始化配置
-
-首次使用前，需要初始化配置：
+## Quick Start
 
 ```bash
-# 交互式初始化配置
+# 1. Initialize config (one-time setup)
 ai-init
+
+# 2. Check everything is configured
+ai-status
+
+# 3. Start using
+ai-error                        # paste an error, get a fix
+ai-shell "find files over 100M" # generate a shell command
+ai-sql "users who joined last month" # generate SQL
+ai-commit                       # generate commit message from staged changes
 ```
 
-按照提示输入：
-- API Base URL（默认：阿里云 DashScope）
-- API Key
-- 默认模型
-- 输出语言（中文/English）
+---
 
-### 1. 配置管理
+## Usage
+
+### ai-init
+
+Interactive wizard that creates `~/.config/ai-tools/config.json` with all default values pre-filled — including system prompts for each tool, so you can customize them directly.
 
 ```bash
-# 查看配置（API Key 自动脱敏）
-ai-config
-
-# 仅显示配置文件路径
-ai-config -p
-
-# 使用编辑器打开配置
-ai-config -e
-
-# 重置为默认配置
-ai-config --reset
+ai-init           # create config
+ai-init --force   # overwrite existing config
 ```
 
-### 2. 报错分析
+---
+
+### ai-status
+
+Quick overview of your current configuration.
 
 ```bash
-# 交互模式
-ai-error
-
-# 直接读取剪贴板
-ai-error -y
-
-# 详细解释模式
-ai-error -e
+ai-status
 ```
 
-### 3. Shell 命令生成
+```
+AI Tools  v1.3.0
+
+config    ~/.config/ai-tools/config.json  ✓
+api key   sk-ab••••1234  ✓
+endpoint  https://dashscope.aliyuncs.com/compatible-mode/v1
+model     qwen3.5-flash
+language  zh
+explain   true
+
+tools
+  ai-error    qwen-plus     showExplanation: true
+  ai-shell    qwen3.5-flash
+  ai-sql      qwen3.5-flash dialect: postgresql
+  ai-commit   qwen3.5-flash
+```
+
+---
+
+### ai-config
 
 ```bash
-# 交互模式
-ai-shell
-
-# 直接传入描述
-ai-shell "查找当前目录下所有大于 100M 的文件"
-
-# 生成并执行（需确认）
-ai-shell -r
-
-# 修改模式（提供命令和报错）
-ai-shell -m "find . -name '*.txt' | 报错信息..."
+ai-config           # view config (API key masked)
+ai-config -e        # open in $EDITOR
+ai-config -p        # print config file path only
+ai-config --reset   # reset to defaults
 ```
 
-示例：
-```bash
-$ ai-shell "查找所有大于 100M 的文件"
+---
 
-🐚 AI Shell - 根据描述生成 Shell 命令
+### ai-error
 
-⏳ 正在生成命令...
-
-📝 命令：find . -type f -size +100M
-📖 说明：使用 find 命令查找当前目录下所有大小超过 100M 的文件
-
-✅ 生成完成
-```
-
-### 4. SQL 查询生成
+Paste an error message, get root cause analysis and fix suggestions.
 
 ```bash
-# 交互模式
-ai-sql
-
-# 直接传入描述
-ai-sql "查询年龄大于 18 岁的用户"
-
-# 指定 SQL 方言
-ai-sql --dialect mysql "查询用户表"
-
-# 修改模式（提供 SQL 和报错）
-ai-sql -m "SELECT * FROM users | 报错信息..."
+ai-error                  # interactive input
+ai-error -y               # read from clipboard directly
+ai-error -e               # request a more detailed explanation
 ```
 
-示例：
+Example:
+
+```
+$ ai-error
+
+🔧 Error Solver v1.3.0
+
+📋 请输入报错信息 (或直接粘贴):
+
+❌ 错误: Node.js 版本不兼容，需要 >= 18
+✅ 修复: nvm install 18 && nvm use 18
+💡 提示: 在 .nvmrc 中固定版本避免重复切换
+```
+
+---
+
+### ai-shell
+
+Generate shell commands from a natural language description. After generation, choose what to do with the result.
+
 ```bash
-$ ai-sql "查询订单数大于 10 的用户"
-
-📊 AI SQL - 根据描述生成 SQL 查询
-🔧 当前方言：postgresql
-
-⏳ 正在生成 SQL...
-
-📝 SQL: SELECT user_id, COUNT(*) as order_count FROM orders GROUP BY user_id HAVING COUNT(*) > 10 ORDER BY order_count DESC;
-📖 说明：使用 GROUP BY 和 HAVING 子句筛选订单数大于 10 的用户
-
-✅ 生成完成
+ai-shell                                  # interactive
+ai-shell "find all files larger than 100M"  # inline description
+echo "list top 5 biggest files" | ai-shell  # pipe input
+ai-shell --history                          # view recent commands
 ```
 
-## ⚙️ 配置说明
+After the command is generated:
 
-配置文件路径：`~/.config/ai-tools/config.json`
+```
+  $ find . -size +100M -ls
+  find: recursively search for files larger than 100MB
 
-### 配置示例
+? 选择操作 ›
+❯ ⚡ 直接执行
+  📋 复制到剪贴板
+  ✏️  编辑后执行
+  ✖  取消
+```
+
+Dangerous commands (`rm -rf`, `sudo`, `chmod 777`, etc.) require typing `yes` before execution.
+
+---
+
+### ai-sql
+
+Generate SQL from a natural language description. Supports PostgreSQL, MySQL, and SQLite.
+
+```bash
+ai-sql                                         # interactive
+ai-sql "users who placed more than 10 orders"  # inline
+ai-sql --dialect mysql "monthly active users"  # specify dialect
+ai-sql --modify "SELECT * FORM users | ..."    # fix broken SQL
+echo "top 10 products by revenue" | ai-sql     # pipe input
+```
+
+After the SQL is generated:
+
+```
+  SELECT user_id, COUNT(*) AS order_count
+  FROM orders
+  GROUP BY user_id
+  HAVING COUNT(*) > 10
+  ORDER BY order_count DESC;
+  Groups orders by user and filters those with more than 10 orders.
+
+? 选择操作 ›
+❯ 📋 复制到剪贴板
+  ✏️  编辑后复制
+  ✖  取消
+```
+
+---
+
+### ai-commit
+
+Analyzes staged git changes and generates a [Conventional Commits](https://www.conventionalcommits.org/) message.
+
+```bash
+ai-commit        # use already-staged changes
+ai-commit -a     # run git add -A first, then generate
+```
+
+If nothing is staged, it lists unstaged files and asks whether to stage them.
+
+```
+📝 AI Commit - 根据改动生成 commit message
+
+  src/commands/smart-sql.ts  | 120 +++---
+  src/config.ts              |  18 +-
+  2 files changed, 97 insertions(+), 41 deletions(-)
+
+⏳ 正在分析改动并生成 commit message...
+
+  feat(sql): rewrite smart-sql with clean extraction and action menu
+
+  Remove code-fence markers from LLM output, strip markdown from
+  explanations, add copy/edit action menu aligned with smart-shell.
+
+? 选择操作 ›
+❯ ✅ 直接提交
+  ✏️  编辑后提交
+  📋 复制到剪贴板
+  ✖  取消
+```
+
+---
+
+## Configuration
+
+Config file: `~/.config/ai-tools/config.json`
+
+Running `ai-init` creates this file with all options pre-filled and commented. You can edit it directly at any time.
 
 ```json
 {
-  "_comment": "AI Tools 通用配置文件",
   "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
   "apiKey": "sk-xxxxx",
   "model": "qwen3.5-flash",
   "language": "zh",
+  "showExplanation": true,
 
-  "_comment": "工具独立配置，覆盖通用配置",
   "errorSolver": {
-    "model": "qwen3.5-flash",
-    "explainMode": true,
-    "systemMessage": "自定义报错分析提示词..."
+    "model": "qwen-plus",
+    "showExplanation": true,
+    "systemMessage": "custom prompt..."
   },
   "smartShell": {
     "model": "qwen3.5-flash",
-    "systemMessage": "自定义 Shell 生成提示词..."
+    "showExplanation": true,
+    "systemMessage": "custom prompt..."
   },
   "smartSql": {
     "model": "qwen3.5-flash",
     "dialect": "postgresql",
-    "systemMessage": "自定义 SQL 生成提示词..."
+    "showExplanation": true,
+    "systemMessage": "custom prompt..."
+  },
+  "aiCommit": {
+    "model": "qwen3.5-flash",
+    "showExplanation": true,
+    "systemMessage": "custom prompt..."
   }
 }
 ```
 
-### 配置字段说明
+### Fields
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| `baseUrl` | string | API 基础 URL（阿里云 DashScope 或其他 OpenAI 兼容接口） |
-| `apiKey` | string | API 密钥 |
-| `model` | string | 默认模型 |
-| `language` | string | 输出语言：`zh`（中文）或 `en`（English） |
-| `errorSolver.model` | string | 错误分析专用模型 |
-| `errorSolver.explainMode` | boolean | 是否启用详细解释模式 |
-| `errorSolver.systemMessage` | string | 自定义 system 提示词 |
-| `smartShell.model` | string | Shell 生成专用模型 |
-| `smartShell.systemMessage` | string | 自定义 Shell 生成提示词 |
-| `smartSql.model` | string | SQL 生成专用模型 |
-| `smartSql.dialect` | string | 默认 SQL 方言（postgresql/mysql/sqlite） |
-| `smartSql.systemMessage` | string | 自定义 SQL 生成提示词 |
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `baseUrl` | string | DashScope | Any OpenAI-compatible API endpoint |
+| `apiKey` | string | — | API key |
+| `model` | string | `qwen3.5-flash` | Default model for all tools |
+| `language` | string | `zh` | Output language: `zh` or `en` |
+| `showExplanation` | boolean | `true` | Show explanation text globally; each tool can override |
+| `<tool>.model` | string | inherited | Per-tool model override |
+| `<tool>.showExplanation` | boolean | inherited | Override global `showExplanation` for one tool |
+| `<tool>.systemMessage` | string | built-in | Customize the system prompt sent to the LLM |
+| `smartSql.dialect` | string | `postgresql` | SQL dialect: `postgresql` / `mysql` / `sqlite` |
 
-## 📋 CLI 选项
+### Compatible API Providers
 
-### ai-init
+Any provider that exposes an OpenAI-compatible `/chat/completions` endpoint works:
 
-| 选项 | 简写 | 说明 |
-|------|------|------|
-| `--force` | `-f` | 覆盖已存在的配置文件 |
+- **Alibaba Cloud DashScope** (default) — Qwen models
+- **DeepSeek** — `https://api.deepseek.com/v1`
+- **OpenAI** — `https://api.openai.com/v1`
+- **Groq**, **Together AI**, **Ollama** (local), and others
 
-### ai-config
+---
 
-| 选项 | 简写 | 说明 |
-|------|------|------|
-| `--edit` | `-e` | 使用默认编辑器打开配置文件 |
-| `--path` | `-p` | 仅显示配置文件路径 |
-| `--reset` | | 重置为默认配置 |
-
-### ai-error
-
-| 选项 | 简写 | 说明 |
-|------|------|------|
-| `--yes` | `-y` | 直接读取剪贴板，不进入交互模式 |
-| `--config <path>` | `-c` | 指定配置文件路径 |
-| `--explain` | `-e` | 启用详细解释模式 |
-
-### ai-shell
-
-| 选项 | 简写 | 说明 |
-|------|------|------|
-| `--config <path>` | `-c` | 指定配置文件路径 |
-| `--run` | `-r` | 生成后直接执行（需确认） |
-| `--modify` | `-m` | 修改模式：提供命令和报错信息进行修复 |
-| `[input]` | | 直接输入描述内容（可选） |
-
-### ai-sql
-
-| 选项 | 简写 | 说明 |
-|------|------|------|
-| `--config <path>` | `-c` | 指定配置文件路径 |
-| `--dialect <type>` | `-d` | SQL 方言 (postgresql/mysql/sqlite)，默认 postgresql |
-| `--modify` | `-m` | 修改模式：提供 SQL 和报错信息进行修复 |
-| `[input]` | | 直接输入描述内容（可选） |
-
-## 🛠️ 开发
+## Development
 
 ```bash
-# 安装依赖
+git clone https://github.com/lance2026/ai-tools.git
+cd ai-tools
 npm install
-
-# 编译 TypeScript
-npm run build
-
-# 本地运行
-npm run start
-
-# 开发模式
-npm run dev
+npm run build      # compile TypeScript → dist/
+node bin/ai-shell  # test locally without installing
 ```
 
-## 📦 发布
-
-```bash
-# 登录 npm
-npm login
-
-# 发布
-npm publish --access public
-```
-
-## 📝 计划工具
-
-- [x] ai-init - 初始化配置
-- [x] ai-config - 配置管理
-- [x] ai-error - 报错分析
-- [x] ai-shell - Shell 命令生成
-- [x] ai-sql - SQL 查询生成
-- [ ] ai-commit - Git 提交信息生成
-- [ ] ai-review - 代码审查
-- [ ] ai-log - 日志分析
-
-## 📄 许可证
+## License
 
 MIT
