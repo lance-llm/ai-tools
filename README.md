@@ -13,6 +13,7 @@ AI-powered CLI toolkit for developers — error analysis, shell command generati
 | `ai-shell` | Generate shell commands from natural language |
 | `ai-sql` | Generate SQL queries from natural language |
 | `ai-commit` | Analyze git diff and generate a commit message |
+| `ai-tr` | Intelligent bilingual translation — auto-detect language and translate |
 
 ## Installation
 
@@ -207,6 +208,41 @@ If nothing is staged, it lists unstaged files and asks whether to stage them.
 
 ---
 
+### ai-tr / ai-translate
+
+Intelligent bilingual translation tool — auto-detects input language and translates between two configured languages.
+
+```bash
+ai-tr "hello world"              # translate to Chinese
+ai-tr "你好世界"                  # translate to English
+ai-tr --langs zh,ja "你好"        # translate between Chinese and Japanese
+ai-tr --set-langs zh,en          # save language pair to config
+echo "hello" | ai-tr             # pipe input
+cat file.txt | ai-tr             # translate multi-line text
+```
+
+After translation:
+
+```
+🌐 AI Translate - 智能双语翻译
+  当前语言对：中文 ⇄ English
+
+⏳ 正在翻译...
+
+  你好，世界
+
+? 选择操作 ›
+❯ 📋 复制到剪贴板
+  ✏️  编辑后复制
+  ✖  取消
+```
+
+**Aliases:** `ai-translate` works the same as `ai-tr`.
+
+**Language codes:** `zh` (Chinese), `en` (English), `ja` (Japanese), `ko` (Korean), `fr` (French), `de` (German), `es` (Spanish), `it` (Italian), `pt` (Portuguese), `ru` (Russian)
+
+---
+
 ## Configuration
 
 Config file: `~/.config/ai-tools/config.json`
@@ -241,6 +277,10 @@ Running `ai-init` creates this file with all options pre-filled and commented. Y
     "model": "qwen3.5-flash",
     "showExplanation": true,
     "systemMessage": "custom prompt..."
+  },
+  "aiTr": {
+    "model": "qwen3.5-flash",
+    "languages": ["zh", "en"]
   }
 }
 ```
@@ -258,6 +298,7 @@ Running `ai-init` creates this file with all options pre-filled and commented. Y
 | `<tool>.showExplanation` | boolean | inherited | Override global `showExplanation` for one tool |
 | `<tool>.systemMessage` | string | built-in | Customize the system prompt sent to the LLM |
 | `smartSql.dialect` | string | `postgresql` | SQL dialect: `postgresql` / `mysql` / `sqlite` |
+| `aiTr.languages` | array | `["zh", "en"]` | Language pair for translation |
 
 ### Compatible API Providers
 

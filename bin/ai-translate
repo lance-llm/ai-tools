@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+// ai-translate command entry (alias for ai-tr)
+require('../dist/commands/ai-tr.js');

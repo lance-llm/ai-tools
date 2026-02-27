@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+// ai-tr command entry
+require('../dist/commands/ai-tr.js');
