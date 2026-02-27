@@ -18,6 +18,7 @@ ai-init  # 一次配置，永久使用
 | [`ai-sql`](docs/usage.md#ai-sql) | SQL 生成 | `ai-sql "上月活跃用户"` |
 | [`ai-commit`](docs/usage.md#ai-commit) | Commit 信息 | `ai-commit` 分析 git diff |
 | [`ai-tr`](docs/usage.md#ai-tr) | 双语翻译 | `ai-tr "hello" → 你好` |
+| [`ai-mind`](docs/usage.md#ai-mind) | Apple 智能助理 | `ai-mind today` 今日总结 |
 | `ai-status` | 查看配置 | `ai-status` |
 | `ai-config` | 管理配置 | `ai-config -e` 编辑 |
 

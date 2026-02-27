@@ -12,7 +12,8 @@
     "ai-init": "./bin/ai-init",
     "ai-config": "./bin/ai-config",
     "ai-tr": "./bin/ai-tr",
-    "ai-translate": "./bin/ai-tr"
+    "ai-translate": "./bin/ai-tr",
+    "ai-mind": "./bin/ai-mind"
   },
   "scripts": {
     "build": "tsc",

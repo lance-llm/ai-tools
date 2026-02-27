@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+// ai-mind command entry
+require('../dist/commands/mind.js');

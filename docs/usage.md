@@ -7,6 +7,7 @@
 - [ai-sql](#ai-sql) - SQL 查询生成
 - [ai-commit](#ai-commit) - Git Commit 信息
 - [ai-tr](#ai-tr) - 双语翻译
+- [ai-mind](#ai-mind) - Apple 智能助理
 - [配置说明](#配置说明)
 
 ---
@@ -283,6 +284,77 @@ cat file.txt | ai-tr             # 多行翻译
   }
 }
 ```
+
+---
+
+## ai-mind
+
+Apple 智能助理 - 整合 Apple Notes、Reminders、Calendar，AI 帮你管理日程、待办、笔记
+
+### 基本用法
+
+```bash
+ai-mind today              # 今日智能总结
+ai-mind today --copy       # 生成后自动复制
+```
+
+### 输出示例
+
+```
+🧠 AI Mind - 今日智能总结
+
+📅 今日日程
+  - 14:00 产品评审会
+  - 16:30 和开发对齐需求
+
+⏰ 待办事项
+  - ⚠️ 逾期：提交设计稿 (截止：2/27)
+  - ✅ 今日：完成 PRD 文档
+  - 🔜 未来：下周演讲准备
+
+📝 相关笔记
+  - 产品想法
+  - 会议记录
+
+💡 今日建议
+  1. 先完成：提交项目文档（高优）
+  2. 14:00 产品会议
+  3. 会后整理会议纪要
+```
+
+### 工作原理
+
+1. 通过 AppleScript 读取：
+   - **Calendar** - 今天和明天的日程
+   - **Reminders** - 所有待办事项（按逾期/今日/未来分类）
+   - **Notes** - 笔记标题列表
+
+2. AI 分析并生成：
+   - 智能日程表
+   - 优先级建议
+   - 时间安排建议
+
+### 配置
+
+```json
+{
+  "aiMind": {
+    "model": "qwen3.5-flash"
+  }
+}
+```
+
+### 注意事项
+
+- **仅支持 macOS** - 依赖 AppleScript
+- **首次运行需要授权** - 允许访问日历、提醒事项、笔记
+- **iCloud 同步** - 数据需存储在 iCloud 账户
+
+### 未来功能 (TODO)
+
+- `ai-mind add "周五下午 3 点开会"` - 自然语言创建事件
+- `ai-mind notes clean` - 整理笔记，提取待办
+- `ai-mind report weekly` - 自动生成周报
 
 ---
 

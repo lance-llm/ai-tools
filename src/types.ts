@@ -16,6 +16,11 @@ export interface ToolConfig {
   showExplanation?: boolean; // overrides the common-level showExplanation
   maxDiffLength?: number;    // ai-commit: max characters of git diff sent to LLM, default 40000
   languages?: string[];      // ai-tr: language pair for translation, e.g. ['zh', 'en']
+  aiMind?: {                 // ai-mind: Apple integration settings
+    enabled?: boolean;
+    defaultReminderList?: string;
+    defaultCalendar?: string;
+  };
   [key: string]: any;
 }
 
