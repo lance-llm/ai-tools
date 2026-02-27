@@ -121,12 +121,15 @@ async function main() {
     apiKey: response.apiKey,
     model: response.model,
     language: lang,
+    // Global default: show explanation text for all tools (true/false)
+    // Each tool section below can override this independently
+    showExplanation: true,
 
     errorSolver: {
       // Override the global model for this tool
       model: response.model,
-      // Show verbose explanation of the error cause (true/false)
-      explainMode: true,
+      // Show the 💡 hint section in error analysis output (overrides global showExplanation)
+      showExplanation: true,
       // Customize the system prompt sent to the LLM
       systemMessage: DEFAULT_SYSTEM_MESSAGES['errorSolver']?.[lang]
         ?? DEFAULT_SYSTEM_MESSAGES['errorSolver']?.['zh']
@@ -135,7 +138,7 @@ async function main() {
 
     smartShell: {
       model: response.model,
-      // Show command explanation below the generated command (true/false)
+      // Show command explanation below the generated command (overrides global showExplanation)
       showExplanation: true,
       systemMessage: DEFAULT_SYSTEM_MESSAGES['smartShell']?.[lang]
         ?? DEFAULT_SYSTEM_MESSAGES['smartShell']?.['zh']
@@ -146,6 +149,8 @@ async function main() {
       model: response.model,
       // SQL dialect: postgresql | mysql | sqlite
       dialect: 'postgresql',
+      // Show query explanation below the generated SQL (overrides global showExplanation)
+      showExplanation: true,
       systemMessage: DEFAULT_SYSTEM_MESSAGES['smartSql']?.[lang]
         ?? DEFAULT_SYSTEM_MESSAGES['smartSql']?.['zh']
         ?? '',

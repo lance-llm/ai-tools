@@ -125,10 +125,15 @@ export function loadConfig(toolName: string, customPath?: string): MergedConfig 
     ...toolConfig,
   };
 
-  // 如果没有设置 systemMessage，根据 language 使用默认值
+  // Fill default systemMessage based on language if not set
   if (!mergedConfig.systemMessage) {
     const lang = mergedConfig.language || 'zh';
     mergedConfig.systemMessage = DEFAULT_SYSTEM_MESSAGES[toolName]?.[lang] || DEFAULT_SYSTEM_MESSAGES[toolName]?.['zh'] || '';
+  }
+
+  // Default showExplanation to true when not explicitly configured at any level
+  if (mergedConfig.showExplanation === undefined) {
+    mergedConfig.showExplanation = true;
   }
 
   // 验证必要配置

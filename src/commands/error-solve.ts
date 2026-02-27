@@ -99,6 +99,10 @@ async function main() {
 
     // 解析并打印结果
     const parsed = formatResult(result);
+    // Hide the 💡 hint section when showExplanation is disabled
+    if (config.showExplanation === false) {
+      parsed.hint = undefined;
+    }
     printResult(parsed, detectedLang);
 
     printSuccess('分析完成');

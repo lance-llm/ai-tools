@@ -4,16 +4,16 @@ export interface CommonConfig {
   baseUrl: string;
   apiKey: string;
   model: string;
-  language?: string;  // zh | en
+  language?: string;        // zh | en
+  showExplanation?: boolean; // show explanation text, default true; tool config overrides this
 }
 
 export interface ToolConfig {
   model?: string;
   systemMessage?: string;
-  dialect?: string;        // postgresql | mysql | sqlite
-  explainMode?: boolean;
+  dialect?: string;         // postgresql | mysql | sqlite
   autoCopyFix?: boolean;
-  showExplanation?: boolean; // ai-shell: show command explanation, default true
+  showExplanation?: boolean; // overrides the common-level showExplanation
   [key: string]: any;
 }
 
