@@ -11,8 +11,7 @@ import { printLoading, printError, printSuccess } from '../formatter';
 import { version } from '../../package.json';
 
 const TOOL_NAME = 'aiCommit';
-// Truncate diff to avoid exceeding LLM token limits
-const MAX_DIFF_LENGTH = 8000;
+const DEFAULT_MAX_DIFF_LENGTH = 40000;
 
 // I18N text
 const I18N = {
@@ -180,9 +179,10 @@ async function run(): Promise<void> {
     process.exit(0);
   }
 
+  const maxDiffLength: number = config.maxDiffLength ?? DEFAULT_MAX_DIFF_LENGTH;
   let truncated = false;
-  if (diff.length > MAX_DIFF_LENGTH) {
-    diff = diff.slice(0, MAX_DIFF_LENGTH);
+  if (diff.length > maxDiffLength) {
+    diff = diff.slice(0, maxDiffLength);
     truncated = true;
   }
 

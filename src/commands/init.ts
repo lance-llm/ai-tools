@@ -160,6 +160,8 @@ async function main() {
       model: response.model,
       // Show commit body in preview and include it in the final commit (overrides global showExplanation)
       showExplanation: true,
+      // Max characters of git diff sent to the LLM (default 40000)
+      maxDiffLength: 40000,
       systemMessage: DEFAULT_SYSTEM_MESSAGES['aiCommit']?.[lang]
         ?? DEFAULT_SYSTEM_MESSAGES['aiCommit']?.['zh']
         ?? '',

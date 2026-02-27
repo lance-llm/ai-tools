@@ -14,6 +14,7 @@ export interface ToolConfig {
   dialect?: string;         // postgresql | mysql | sqlite
   autoCopyFix?: boolean;
   showExplanation?: boolean; // overrides the common-level showExplanation
+  maxDiffLength?: number;    // ai-commit: max characters of git diff sent to LLM, default 40000
   [key: string]: any;
 }
 
